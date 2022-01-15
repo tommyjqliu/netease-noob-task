@@ -82,9 +82,153 @@ HTML对大小写不敏感，也就是说标签类型、属性名使用大写与�
 这些元素用于语义化的修饰文本。
 ## CSS
 ### 基础语法
+一个CSS规则集由选择器和声明块组成：
+```css
+  h1 {
+    color: red;
+    font-size: 5em;
+  }
+```
+其中，大括号前的'h1'是一个选择器，大括号内的内容是声明块。选择器用于筛选该规则集作用的元素，声明块则用于说明该规则集的效果。声明块内是一个或多个键值对。
 ### 选择器
+#### 基础选择器
+元素选择器
+```css
+h1 { } /* 选择所有的h1元素 */
+```
+class选择器
+```css
+.box { } /* 选择所有含box类的元素 */
+```
+id选择器
+```css
+#unique { } /* 选择id=unique的元素*/
+```
+标签属性选择器
+```css
+[title] { } /* 选择带有title属性的元素*/
+[href="https://example.com"] { } /* 选择title属性等于该字符串的元素*/
+[class~="example"] { } /* 选择列表属性中包含该字符串的元素*/
+```
+伪类选择器
+```css
+:hover { } /* 选择正在hover态的元素*/
+```
+伪元素选择器
+```css
+::first-line { } /* 选择所有元素内的第一行伪元素*/
+```
+#### 选择器运算
+或
+```css
+A, B { } /* 选择A选择器或B选择器*/
+
+h1, .special {
+  color: blue;
+}
+```
+与
+```css
+AB { } /* 选择A选择器且B选择器*/
+
+a[href="https://example.com"] { }
+.class1.class2 { }
+```
+包含
+```css
+A B { } /* 选择A选择器内的B选择器*/
+```
+子代
+```css
+A > B { } /* 选择A选择器子元素的B选择器*/
+```
+兄弟
+```css
+A + B { } /* 选择A选择器的后一个兄弟B选择器*/
+A ~ B { } /* 选择A选择器的所有兄弟B选择器*/
+```
 ### 盒子模型的高级用法
+#### box-sizing
+```css
+A { 
+  box-sizing: border-box; 
+} 
+/* 将盒子模型的宽高计算设置为border-box*/
+
+html {
+  box-sizing: border-box;
+}
+*, *::before, *::after {
+  box-sizing: inherit;
+}
+/* 将所有元素都设置为border-box*/
+```
+#### 负margin
+负的margin可以将元素“扯”出元素盒从而达到调整位置，调整元素宽高的效果
+ ![负margin](https://s3.bmp.ovh/imgs/2022/01/1074da2d84f35353.png)
+```css
+  .box {
+    margin-top: -30px;
+    margin-right: 30px;
+    margin-bottom: 40px;
+    margin-left: 4em;
+  }
+```
+```html
+  <div class="container">
+    <div class="box"></div>
+  </div>
+```
 ### 常用的布局模型
+#### flexbox
+在flex布局中，一个元素被设为flex容器，它的子元素都会成为flex item进行布局。flex item将会沿着容器的主轴排列，并可以设置为在空间不足时换行。通过以下这些属性来设置flex布局的具体表现。
+```css
+  /* 这些属性设置在容器上*/
+  .container {
+    flex-direction: row | row-reverse | column | column-reverse;
+    /* flex-direction属性决定主轴的方向（即项目的排列方向）*/
+    flex-wrap: nowrap | wrap | wrap-reverse;
+    /* flex-wrap属性决定换行行为*/
+    flex-flow: <flex-direction> || <flex-wrap>;
+    /* flex-flow属性是flex-direction属性和flex-wrap属性的简写形式*/
+    justify-content: flex-start | flex-end | center | space-between | space-around;
+    /* justify-content属性定义了项目在主轴上的对齐方式*/
+    align-items: flex-start | flex-end | center | baseline | stretch;
+    /* align-items属性定义项目在cross-axis上如何对齐*/
+    align-content: flex-start | flex-end | center | space-between | space-around | stretch;
+    /* align-content属性定义了多根轴线的对齐方式*/
+  }
+  /* 这些属性设置在flex item上*/
+  .item {
+    order: <integer>;
+    /* order属性定义项目的排列顺序*/
+    flex-grow: <number>; /* default 0 */
+    /* flex-grow属性定义项目的放大比例*/
+    flex-shrink: <number>; /* default 1 */
+    /* flex-shrink属性定义了项目的缩小比例*/
+    flex-basis: <length> | auto; /* default auto */
+    /* flex-basis属性定义了在分配多余空间之前，项目占据的主轴空间（main size）*/
+    flex: auto | none | <'flex-grow'> || ?<'flex-shrink'> || ?<'flex-basis'>;
+    /* flex属性是flex-grow, flex-shrink 和 flex-basis的简写*/
+    align-self: auto | flex-start | flex-end | center | baseline | stretch;
+    /* align-self属性允许单个item有与其他item不一样的对齐方式，可覆盖align-items属性*/
+  }
+```
+#### positioning
+position相关的设置通常用于微调元素位置
+
+例子：
+```css
+  .positioned {
+    position: relative;
+    top: 30px;
+    left: 30px;
+  }
+```
+- static：默认一般定位
+- relative：不脱离文档流，相对于正常定位进行偏移
+- absolute：脱离文档流，相对于最近的父级定位元素而定位（如果没有的话则根据html根元素进行定位）
+- fixed：根据视窗进行定位
 ## Javascript
 ### 基础语法与变量
 Javascript的基本单元是语句。以下是一行声明且赋值语句。
@@ -316,7 +460,210 @@ ES6 迭代器遍历
   // 1 "b"
   ```
 
-### 面向对象的基础概念
 ### 对象的属性和方法
-### Ajax使用
-### es6 es7 等esnext
+#### 属性的类型
+在Javascript中对象的每个属性通常有四个内部描述以及getter，setter
+- value 属性的值
+- writable 属性是否可写
+- enumerable 属性是否可枚举
+- configurable 属性是否可配置（即修改这些内部描述）
+- get 取值函数，取值时被调用
+- set 存值函数，存值时被调用
+
+
+这四个内部描述被储存在属性描述对象中，对于对象的属性a我们可以通过以下方法进行查看，修改
+```javascript
+Object.getOwnPropertyDescriptor(obj, 'a')
+Object.defineProperty(obj, 'a', {
+  value: 123,
+  writable: false,
+  enumerable: true,
+  configurable: false,
+  get: function() { return 456; }
+})
+Object.defineProperties(obj, {
+  a: {
+  value: 123,
+  writable: false,
+  enumerable: true,
+  configurable: false,
+  get: function() { return 456; }
+  },
+  b: {
+  value: 123,
+  writable: false,
+  enumerable: true,
+  configurable: false,
+  get: function() { return 456; }
+  }
+}); // 一次修改多个属性
+```
+
+#### 历遍对象属性
+1. Object.keys()
+2. Object.getOwnPropertyNames()
+这两个方法都可以得到对象属性键名数组，区别在于getOwnPropertyNames还可以得到不可遍历的属性键。
+#### 对象原型相关方法
+- Object.getPrototypeOf(obj) 获取对象原型
+- Object.setPrototypeOf(obj, protoObj) 设置对象原型
+- Object.create(obj) 以obj为原型创建一个对象
+- Object.prototype.hasOwnProperty('method') 判断方法是否定义在对象自身（非继承）
+### 面向对象的基础概念
+事实上，一开始Javascript就并未有意的设计成是一门适合面向对象编程的语言。但程序员们还是通过一些技巧，实现了在Javascript上进行面向对象风格编程。但要谨记，Javascript的底层并没有类的概念，只有原型链。
+#### 构造函数
+既然没有类，那也就实际上没有类的构造函数。不过Javascript中存在对函数的构造调用。我们可以从这里开始模拟一个类。
+
+典型的构造函数
+```javascript
+  var Vehicle = function () {
+  this.price = 1000;
+  // 类的变量属性通常定义在构造函数内，不同的实例可以拥有各自的变量
+  };
+
+  Vehicle.prototype.dirve = function() {
+    // ...drive
+  }
+  // 类的变量属性通常定义在构造函数原型上，不同实例可以共享上面的方法
+  var v = new Vehicle();
+  v.price // 1000
+```
+通过new关键字对函数进行构造调用，我们产生了一个新的自定义对象。这个对象的属性符合我们在构造函数里对类的定义。
+#### 实现继承
+寄生组合式继承就是当前最成熟的继承实现
+```javaScript
+  function SuperClass() {
+    // ... 构造函数
+  }
+
+  function SubClass() {
+    SuperClass.call(this) // 先调用父类构造函数，复制父类属性
+  }
+
+  SubClass.prototype = Object.create(SuperClass.prototype) // 用create方法继承父类的方法
+  SubClass.prototype.constructor = SubClass // 修正constructor属性
+  SubClass.prototype.method1 = function(){} // 开始编写子类方法
+```
+### Ajax
+在web技术之初，网络传输只发生在页面刷新时，极大的限制了网页的表现。Ajax的出现，使得浏览器端获得了异步加载的能力，使得动态网页成为了可能。最初的Ajax是基于浏览器提供的XMLHttpRequest对象实现的。到了现代，浏览器已经普遍提供fetch接口，来代替过时的XMLHttpRequest。
+
+通常，我们用一个XHR对象来象征我们的一次请求。
+#### XMLHttpRequest对象同步发送请求
+```javascript
+  let xhr = new XMLHttpRequest(); 
+  xhr.open("get", "example.php", false); 
+  // 这个方法接收3个参数：请求类型、请求 URL，请求是否异步
+  xhr.send(null); 
+  // send参数应为请求体数据，若无需请求体则必须传null以确保兼容性
+```
+收到响应后，XHR对象的以下属性会被填充上数据。
+- responseText：作为响应体返回的文本。 
+- responseXML：如果响应的内容类型是"text/xml"或"application/xml"，那就是包含响应数据的 XML DOM 文档。 
+- status：响应的 HTTP 状态。 
+- statusText：响应的 HTTP 状态描述。
+
+通过以下代码检查对象的响应
+```javascript
+  if ((xhr.status >= 200 && xhr.status < 300) || xhr.status == 304) { 
+  alert(xhr.responseText); 
+  } else { 
+  alert("Request was unsuccessful: " + xhr.status); 
+  } 
+```
+
+#### XMLHttpRequest对象异步发送请求
+在异步请求中，除了修改open参数，请求发送过程与上文基本一致。为了应对异步的情况，XHR对象存在一个readyState 属性，表示当前处在请求/响应过程的哪个阶段。
+
+0. 未初始化（Uninitialized）。尚未调用 open()方法。
+1. 已打开（Open）。已调用 open()方法，尚未调用 send()方法。
+2. 已发送（Sent）。已调用 send()方法，尚未收到响应。
+3. 接收中（Receiving）。已经收到部分响应。
+4. 完成（Complete）。已经收到所有响应，可以使用了。
+
+基本上，我们只关心状态4。XHR对象的状态改变会触发readystatechange事件，通过在open之前设定该属性，便能监听到事件。
+```javascript
+  let xhr = new XMLHttpRequest(); 
+  xhr.onreadystatechange = function() { 
+    if (xhr.readyState == 4) { 
+      if ((xhr.status >= 200 && xhr.status < 300) || xhr.status == 304) { 
+        alert(xhr.responseText); 
+      } else { 
+        alert("Request was unsuccessful: " + xhr.status); 
+      } 
+    } 
+  }; 
+  xhr.open("get", "example.txt", true); 
+  xhr.send(null); 
+```
+#### Fetch接口的使用
+fetch接口返回一个Promise对象，通过Promise对象的then操作即可以接受到请求的响应。
+```javascript
+  fetch('/bar').then((response) => { 
+  console.log(response.status); // 200 
+  console.log(response.ok); // true 
+  }); 
+```
+### esnext
+#### Class
+在ES6中，标准终于提供了官方的面向对象编程关键字，尽管底层实现和以前一样还是基于原型链，但使用新关键字编写类更方便更易理解了。
+```javascript
+class Animal {
+  // 构造函数，实例化的时候将会被调用，如果不指定，那么会有一个不带参数的默认构造函数.
+  constructor(name,color) {
+    this.name = name;
+    this.color = color;
+  }
+  // toString 是原型对象上的属性
+  toString() {
+    console.log('name:' + this.name + ',color:' + this.color);
+
+  }
+}
+
+ var animal = new Animal('dog','white');//实例化Animal
+ animal.toString();
+
+ console.log(animal.hasOwnProperty('name')); //true
+ console.log(animal.hasOwnProperty('toString')); // false
+ console.log(animal.__proto__.hasOwnProperty('toString')); // true
+
+ class Cat extends Animal {
+  constructor(action) {
+    // 子类必须要在constructor中指定super 函数，否则在新建实例的时候会报错.
+    // 如果没有置顶consructor,默认带super函数的constructor将会被添加、
+    super('cat','white');
+    this.action = action;
+  }
+  toString() {
+    console.log(super.toString());
+  }
+ }
+
+ var cat = new Cat('catch')
+ cat.toString();
+
+ // 实例cat 是 Cat 和 Animal 的实例，和Es5完全一致。
+ console.log(cat instanceof Cat); // true
+ console.log(cat instanceof Animal); // true
+```
+#### Module
+在ES6中，模块化也被正式的引入了，通过import, export关键字我们可以实现无需其他库帮助的模块化，模块拥有自己的作用域。
+
+通过一行script标签我们就可以开始我们的模块化之旅。
+```html
+  <script type="module" src="./module.js"></script>
+```
+这个标签会异步的加载module.js，通过标签的type属性标识，我们可以在这个文件中启用ES6的模块化功能，从而import其他模块。
+#### async/await
+在以前，我们使用Promise进行连续异步编程时，往往要使用连续的then。
+```javascript
+  fetch('/api').then(methodA).then(methodB)...
+```
+这种编写方式不方面理解，阅读性差。async/await的出现改变了这种局面。
+```javascript
+  async function fetchAPI() {
+    let res = await fetch('/api')
+    res = await methodA(res)
+    res = methodB(res)
+    return res
+  }
+```
