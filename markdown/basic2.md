@@ -114,12 +114,29 @@ npm install --save-dev @commitlint/cli @commitlint/config-conventional
 # 配置 commitlint 使用 conventional config
 echo "module.exports = { extends: ['@commitlint/config-conventional'] };" > commitlint.config.js
 ```
-#### husky
-
+commitlint通过标准输入接受message参数
 ```bash
+echo 'foo: bar' | commitlint
+⧗   input: foo: bar
+✖   type must be one of [build, chore, ci, docs, feat, fix, perf, refactor, revert, style, test] [type-enum]
+
+✖   found 1 problems, 0 warnings
+ⓘ   Get help: https://github.com/conventional-changelog/commitlint/#what-is-commitlint
+```
+#### husky
+有了上面三个质量保证工具，我们还需要把他们嵌入到工作流中，实现自动化的规范检查。利用husky，我们可以方便的修改githook，在githook中添加命令在实现质量保证。
+```bash
+# 安装
 npm install husky --save-dev
 npx husky install
 ```
+原理上，husky install是将git的工作区配置增加了一行`core.hookspath=.husky`,将githook储存的文件夹指向了.git文件夹外的.husky文件夹，从而解决了.git文件夹不属于git repository，无法做版本控制的问题。
+
+通过husky add我们可以向hook文件追加命令，如
+```bash
+npx husky add .husky/commit-msg 'npx --no-install commitlint --edit "$1"'
+```
+这样我们就实现了在commit时调用commitlint进行检查。由于本质上husky只是把githook换了个地方，所以具体的编写规则还得看回git自己的文档。
 ### Git
 #### 配置
 Git的配置文件存在三个版本，系统配置(global)，用户配置(system)，工作区配置(local)。他们的优先级依次递增。
