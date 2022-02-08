@@ -1,10 +1,11 @@
+# 配置前端工作环境：vscode, lint and git
 ### VScode
 #### 常用快捷键
 - `Ctrl+K Ctrl+R` 打开快捷键参考
 - `Ctrl+Shift+P, F1` 打开VScode命令面板
 - `Ctrl+,` 打开设置
 - `Ctrl+K Ctrl+S` 打开快捷键设置
-- `Ctrl+`` 打开命令行
+- ``Ctrl+` `` 打开命令行
 - `Ctrl+K Ctrl+0` 折叠所有块
 - `Ctrl+K Ctrl+J` 展开所有块
 - `Shift+Alt+F` 代码格式化
